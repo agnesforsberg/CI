@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import json
 
 app = Flask(__name__)
 
@@ -11,9 +12,10 @@ def index():
 
 @app.route("/webhook", methods=['POST'])
 def github_webhook_handler():
-    print(request.form)
-    return "Just reflecting data\n" + str(["{}:{}".format(x, y) for x, y in request.form.items()])
+    payload = json.loads(request.form['payload'])
+    print(payload)
+    return ""
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=80)
+    app.run(debug=True, host='0.0.0.0',port=80)
