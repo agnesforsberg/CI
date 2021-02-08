@@ -13,11 +13,12 @@ def index():
 @app.route("/webhook", methods=['POST'])
 def github_webhook_handler():
     payload = json.loads(request.form['payload'])
+    print(type(request.headers))
+    print(type(request.headers["X-Github-Event"]))
+    print(request.headers["X-Github-Event"])
+
     print(payload)
-
     return ""
-
-
 
 
 if __name__ == '__main__':
