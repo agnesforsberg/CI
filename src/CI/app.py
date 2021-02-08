@@ -15,7 +15,6 @@ def github_webhook_handler():
     payload = json.loads(request.form['payload'])
     print(payload)
 
-    
     return ""
 
 
