@@ -13,13 +13,16 @@ def index():
 @app.route("/webhook", methods=['POST'])
 def github_webhook_handler():
     payload = json.loads(request.form['payload'])
-    print(type(request.headers))
-    print(type(request.headers["X-Github-Event"]))
-    print(request.headers["X-Github-Event"])
+    event_type = request.headers["X-Github-Event"]
+    if event_type == "push":
+        handle_push(payload)
 
-
-    print(json.dumps(payload, indent=4, sort_keys=True))
     return ""
+
+def handle_push(payload):
+    repo_id = payload["repository"]["id"]
+    if not os.path.isdir("testrepo_"+str(repo_id)):
+        os.system("git clone {} testrepo_{}".format(payload["repository"]["clone_url"],repo_id))
 
 
 if __name__ == '__main__':
