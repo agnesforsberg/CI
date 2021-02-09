@@ -17,6 +17,7 @@ def github_webhook_handler():
     if event_type == "push":
         handle_push(payload)
 
+
     return ""
 
 def handle_push(payload):
