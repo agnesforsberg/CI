@@ -220,7 +220,7 @@ def handle_push(payload):
 
 
     #Run pytest
-    pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True,cwd=repo_name).stdout
+    pytest_stdout = subprocess.run("python -m pytest",text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
