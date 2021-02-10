@@ -24,6 +24,7 @@ def github_webhook_handler():
         handle_push(payload)
     return ""
 
+
 def parse_pylint(string):
     """Parses the pylint stdout string returns the result.
         returns None if no output found."""
