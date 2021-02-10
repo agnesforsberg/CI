@@ -1,5 +1,4 @@
 from flask import Flask, request
-import pytest
 import os
 import subprocess
 import json
@@ -105,18 +104,21 @@ def handle_push(payload):
     print(pylint_output)
     print(pytest_output)
 
+    with open("/tmp/CILogs/{}.txt".format(commit_sha),"w") as log:
+        log.write(pylint_output+"\n"+pytest_output)
+
     if "ERRORS" in pytest_output:
         update_status(payload,"error","The commit testing resulted in some errors")
     elif "FAILURES" in pytest_output:
         update_status(payload,"failure","The commit testing failed")
     else:
-        update_status(payload,"success","The commit testing failed")
+        update_status(payload,"success","The commit testing succeded")
 
 
 def update_status(payload, status="success", description="CI"):
     repo_name = payload["repository"]["full_name"]
     sha = payload["after"]
-    url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}'.format(
+    url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}.txt'.format(
         repo_name=repo_name,
         sha=sha
     )
@@ -131,12 +133,20 @@ def update_status(payload, status="success", description="CI"):
         "description": description,
         "context": "continuous-integration/dd2480"
     }
-    requests.post(url, data=json, headers=headers)
+    requests.post(url, json=json, headers=headers)
 
 if __name__ == '__main__':
-    with open("src/CI/data/demo_payload.json") as f:
-        payload = json.load(f)
+    #   Used for testing only
+    #
+    #   with open("src/CI/data/demo_payload.json") as f:
+    #       payload = json.load(f)
+    #   
+    #       handle_push(payload)
+        
+    if not os.path.isdir("/tmp/CILogs"):
+        os.mkdir("/tmp/CILogs")
 
-        handle_push(payload)
+    #TODO: change port 81 to different port when webhook can be changed. Webserver should be 80 and webhook somthing else :)
+    subprocess.Popen(["python3","-m","http.server","81","-d","/tmp/CILogs"])
     app.run(debug=True, host='0.0.0.0',port=80)
     
