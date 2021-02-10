@@ -212,22 +212,30 @@ def handle_push(payload):
 
     #Switch to branch
     os.system("git -C {} pull".format(repo_name))
+    
+    print("hello0")
+
     os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
 
+    print("hello1")
 
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
     print(pylint_stdout.read())
 
 
+    print("hello2")
+
     #Run pytest
     pytest_stdout = subprocess.run("python -m pytest",text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
 
+    print("hello3")
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
     #notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
 
+    print("hello4")
 
 if __name__ == '__main__':
     #handle_push(json.loads(demo_payload))
