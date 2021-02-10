@@ -12,6 +12,7 @@ password = "whyiscisohard"
 
 
 def send_notification(message):
+    """Sends an email to the receiver email using a smtp server"""
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
