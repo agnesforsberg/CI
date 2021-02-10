@@ -219,6 +219,7 @@ def handle_push(payload):
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
     print(pylint_stdout.read())
 
+
     #Run pytest
     pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True).stdout
     print(pytest_stdout)
