@@ -223,7 +223,6 @@ def handle_push(payload):
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
     print(pylint_stdout.read())
 
-
     print("hello2")
 
     #Run pytest
