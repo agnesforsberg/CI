@@ -206,36 +206,28 @@ def github_webhook_handler():
 
 def handle_push(payload):
     repo_id = payload["repository"]["id"]
-    repo_name = "testrepo_{}".format(repo_id)
+    commit_sha = payload["after"]
+    repo_name = "/tmp/testrepo_{}{}".format(repo_id,commit_sha)
     if not os.path.isdir(repo_name):
         os.system("git clone {} {}".format(payload["repository"]["clone_url"],repo_name))
 
     #Switch to branch
     os.system("git -C {} pull".format(repo_name))
-    
-    print("hello0")
-    print("sha ",payload["after"])
-    os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
+    os.system("git -C {} checkout {}".format(repo_name,commit_sha))
 
-    print("hello1")
 
     #Run pylint
-    #(pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
-    #print(pylint_stdout.read())
-    #print(pylint_stderr.read())
-
-    print("hello2")
+    (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
+    print(pylint_stdout.read())
 
     #Run pytest
     pytest_stdout = subprocess.run(["python3","-m","pytest"],text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
-
-    print("hello3")
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
     #notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
 
-    print("hello4")
+    os.system("rm -rf {}".format(repo_name))
 
 if __name__ == '__main__':
     handle_push(json.loads(demo_payload))
