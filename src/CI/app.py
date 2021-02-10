@@ -211,8 +211,9 @@ def handle_push(payload):
         os.system("git clone {} {}".format(payload["repository"]["clone_url"],repo_name))
 
     #Switch to branch
-    os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
     os.system("git -C {} pull".format(repo_name))
+    os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
+
 
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
@@ -228,5 +229,5 @@ def handle_push(payload):
 
 
 if __name__ == '__main__':
-    handle_push(json.loads(demo_payload))
-    #app.run(debug=True, host='0.0.0.0',port=80)
+    #handle_push(json.loads(demo_payload))
+    app.run(debug=True, host='0.0.0.0',port=80)
