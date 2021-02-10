@@ -148,5 +148,5 @@ if __name__ == '__main__':
 
     #TODO: change port 81 to different port when webhook can be changed. Webserver should be 80 and webhook somthing else :)
     subprocess.Popen(["python3","-m","http.server","81","-d","/tmp/CILogs"])
-    app.run(debug=True, host='0.0.0.0',port=80)
+    app.run(debug=True, host='0.0.0.0',port=80) 
     
