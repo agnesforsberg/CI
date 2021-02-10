@@ -25,31 +25,34 @@ def github_webhook_handler():
 
 def handle_push(payload):
     repo_id = payload["repository"]["id"]
-    repo_name = "testrepo_{}".format(repo_id)
-    if not os.path.isdir(repo_name):
-        os.system("git clone {} {}".format(payload["repository"]["clone_url"],repo_name))
-    else:
-        os.system("git pull {}".format(repo_name))
+    commit_sha = payload["after"]
+    repo_directory = "/tmp/testrepo_{}{}".format(repo_id,commit_sha)
 
+    os.system("git clone {} {}".format(payload["repository"]["clone_url"],repo_directory)) 
+   
     #Switch to branch
-    os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
+    os.system("git -C {} pull".format(repo_directory))
+    os.system("git -C {} checkout {}".format(repo_directory,commit_sha))
+
 
     #Run pylint
-    (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
-    #print(pylint_stdout.read())
+    (pylint_stdout, pylint_stderr) = lint.py_run(repo_directory, return_std=True)
+    pylint_output = pylint_stdout.read()
+    print(pylint_output)
 
     #Run pytest
-    pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True).stdout
-    #print(pytest_stdout)
+    pytest_output = subprocess.run(["python3","-m","pytest"],text=True,capture_output=True,cwd=repo_directory).stdout
+    print(pytest_output)
 
-    subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
-    notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
+    subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_directory, payload["commits"][0]["message"])
+    notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_output + "\n" + pytest_output))
 
+    os.system("rm -rf {}".format(repo_directory))
 
 if __name__ == '__main__':
-
     with open("data/demo_payload.json") as f:
         payload = json.load(f)
 
     handle_push(payload)
     app.run(debug=True, host='0.0.0.0',port=80)
+    
