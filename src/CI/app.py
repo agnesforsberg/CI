@@ -6,7 +6,7 @@ from pylint import epylint as lint
 import requests
 import notification
 
-auth_token = '5b206135ed78930e1d8516619bb641734ea5229c'
+auth_token = '8e8af8fc53ffe2d1971bc627f1ee5ddfdd85c426'
 
 app = Flask(__name__)
 
@@ -113,6 +113,8 @@ def handle_push(payload):
         update_status(payload,"failure","The commit testing failed")
     else:
         update_status(payload,"success","The commit testing succeded")
+        if payload['ref'] == "refs/heads/main":
+            os.system("git pull")
 
 
 def update_status(payload, status="success", description="CI"):
