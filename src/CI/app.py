@@ -145,6 +145,7 @@ if __name__ == '__main__':
         
     if not os.path.isdir("/tmp/CILogs"):
         os.mkdir("/tmp/CILogs")
+        
 
     #TODO: change port 81 to different port when webhook can be changed. Webserver should be 80 and webhook somthing else :)
     subprocess.Popen(["python3","-m","http.server","81","-d","/tmp/CILogs"])
