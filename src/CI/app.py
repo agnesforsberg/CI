@@ -217,11 +217,11 @@ def handle_push(payload):
 
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
-    #print(pylint_stdout.read())
+    print(pylint_stdout.read())
 
     #Run pytest
     pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True).stdout
-    #print(pytest_stdout)
+    print(pytest_stdout)
 
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
     notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
