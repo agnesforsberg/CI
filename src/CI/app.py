@@ -4,7 +4,7 @@ import subprocess
 import json
 from pylint import epylint as lint
 import requests
-import notification
+import src.CI.notification
 
 auth_token = '5b206135ed78930e1d8516619bb641734ea5229c'
 
@@ -83,7 +83,7 @@ def exec_pytest(target_dir):
 def send_email(payload, target_dir, pylint_output, pytest_output):
     """Sends an email with payload-, pylint-, and pytest content"""
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], target_dir, payload["commits"][0]["message"])
-    notification.send_notification('Subject: {}\n\n{}'.format(subject, str(pylint_output) + "\n" + str(pytest_output)))
+    src.CI.notification.send_notification('Subject: {}\n\n{}'.format(subject, str(pylint_output) + "\n" + str(pytest_output)))
 
 def handle_push(payload):
     repo_id = payload["repository"]["id"]
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         
     if not os.path.isdir("/tmp/CILogs"):
         os.mkdir("/tmp/CILogs")
-        
+
 
     #TODO: change port 81 to different port when webhook can be changed. Webserver should be 80 and webhook somthing else :)
     subprocess.Popen(["python3","-m","http.server","81","-d","/tmp/CILogs"])
