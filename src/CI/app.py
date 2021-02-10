@@ -214,7 +214,7 @@ def handle_push(payload):
     os.system("git -C {} pull".format(repo_name))
     
     print("hello0")
-
+    print("sha ",payload["after"])
     os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
 
     print("hello1")
@@ -222,7 +222,7 @@ def handle_push(payload):
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
     print(pylint_stdout.read())
-    print(pylint_stdout.read())
+    print(pylint_stderr.read())
 
     print("hello2")
 
@@ -238,5 +238,5 @@ def handle_push(payload):
     print("hello4")
 
 if __name__ == '__main__':
-    #handle_push(json.loads(demo_payload))
-    app.run(debug=True, host='0.0.0.0',port=80)
+    handle_push(json.loads(demo_payload))
+    #app.run(debug=True, host='0.0.0.0',port=80)
