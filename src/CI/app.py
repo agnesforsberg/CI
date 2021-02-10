@@ -227,7 +227,7 @@ def handle_push(payload):
     print("hello2")
 
     #Run pytest
-    pytest_stdout = subprocess.run("python3 -m pytest",text=True,capture_output=True,cwd=repo_name).stdout
+    pytest_stdout = subprocess.run("ls -la",text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
 
