@@ -222,6 +222,7 @@ def handle_push(payload):
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
     print(pylint_stdout.read())
+    print(pylint_stdout.read())
 
     print("hello2")
 
