@@ -227,6 +227,8 @@ def handle_push(payload):
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
     #notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
 
+
+
     os.system("rm -rf {}".format(repo_name))
 
 
