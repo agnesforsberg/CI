@@ -209,11 +209,10 @@ def handle_push(payload):
     repo_name = "testrepo_{}".format(repo_id)
     if not os.path.isdir(repo_name):
         os.system("git clone {} {}".format(payload["repository"]["clone_url"],repo_name))
-    else:
-        os.system("git pull {}".format(repo_name))
 
     #Switch to branch
     os.system("git -C {} checkout {}".format(repo_name,payload["after"]))
+    os.system("git -C {} pull".format(repo_name))
 
     #Run pylint
     (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
@@ -221,13 +220,13 @@ def handle_push(payload):
 
 
     #Run pytest
-    pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True).stdout
+    pytest_stdout = subprocess.run("python -m pytest {}".format(repo_name),text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
-    notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
+    #notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
 
 
 if __name__ == '__main__':
     handle_push(json.loads(demo_payload))
-    app.run(debug=True, host='0.0.0.0',port=80)
+    #app.run(debug=True, host='0.0.0.0',port=80)
