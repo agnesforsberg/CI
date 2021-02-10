@@ -224,6 +224,7 @@ def handle_push(payload):
     pytest_stdout = subprocess.run("python -m pytest",text=True,capture_output=True,cwd=repo_name).stdout
     print(pytest_stdout)
 
+
     subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], repo_name, payload["commits"][0]["message"])
     #notification.send_notification('Subject: {}\n\n{}'.format(subject, pylint_stdout.read() + "\n" + pytest_stdout))
 
