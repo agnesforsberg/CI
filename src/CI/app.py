@@ -220,9 +220,9 @@ def handle_push(payload):
     print("hello1")
 
     #Run pylint
-    (pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
-    print(pylint_stdout.read())
-    print(pylint_stderr.read())
+    #(pylint_stdout, pylint_stderr) = lint.py_run(repo_name, return_std=True)
+    #print(pylint_stdout.read())
+    #print(pylint_stderr.read())
 
     print("hello2")
 
