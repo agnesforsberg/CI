@@ -7,6 +7,7 @@ import notification
 import parse
 from pylint import epylint as lint
 from flask import Flask, request
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -120,7 +121,9 @@ def handle_push(payload):
     print(pylint_output)
     print(pytest_output)
 
-    with open("/tmp/CILogs/{}.txt".format(commit_sha), "w") as log:
+    timestamp = datetime.now().strftime('[%Y%m%dT%H%M%S]_')
+    
+    with open("/tmp/CILogs/{}{}.txt".format(timestamp,commit_sha), "w") as log:
         log.write(pylint_output + "\n" + pytest_output)
 
     if "ERRORS" in str(pytest_output):
