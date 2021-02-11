@@ -1,4 +1,7 @@
 import unittest
+
+import os
+import json
 import imaplib
 import email
 from email.header import decode_header
@@ -13,6 +16,27 @@ class TestStringMethods(unittest.TestCase):
 
     def test_index(self):
         self.assertEqual("Hello :)", app.index())
+
+
+    def test_clone_repo(self):
+        # Run clone_repo with demo_payload.json and check the 3 functionalities
+        with open('./src/CI/data/demo_payload.json') as json_file:
+            content = json.load(json_file)
+        app.clone_repo(content, 'testrepo')
+        output = os.popen("git -C testrepo status").read()
+
+
+        # 1 - Repo was cloned, checked by lack of error message
+        self.assertFalse("fatal" in output)
+
+        # 2 - git pull has been performed, and therefore "Your branch is up to date in output"
+        self.assertTrue("up to date" in output)
+
+        # 3 - on correct branch, should be main
+        self.assertTrue("On branch main" in output)
+
+        # cleanup
+        os.system("rm -r testrepo")
 
     # Tests the send_notification function by sending a test email and asserting that the correct email arrived.
     def test_notification(self):
