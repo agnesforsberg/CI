@@ -1,28 +1,33 @@
-from flask import Flask, request
+"""This is app.py"""
 import os
 import subprocess
 import json
-from pylint import epylint as lint
 import requests
 import notification
+import parse
+from pylint import epylint as lint
+from flask import Flask, request
 
-auth_token = '8e8af8fc53ffe2d1971bc627f1ee5ddfdd85c426'
+AUTH_TOKEN = '8e8af8fc53ffe2d1971bc627f1ee5ddfdd85c426'
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
+    """Simple function for test.py"""
     return "Hello :)"
 
 
 @app.route("/webhook", methods=['POST'])
 def github_webhook_handler():
+    """The following method gets called by the github webhook."""
     payload = json.loads(request.form['payload'])
     event_type = request.headers["X-Github-Event"]
     if event_type == "push":
         handle_push(payload)
     return ""
+
 
 def parse_pylint(string):
     """Parses the pylint stdout string returns the result.
@@ -30,11 +35,13 @@ def parse_pylint(string):
     lines = string.split('\n')
 
     for line in lines[::-1]:
-        result = parse.parse(' Your code has been rated at {:F}/10 (previous run: {:F}/10, +{:F})', line)
+        result = parse.parse(' Your code has been rated at {:F}/10\
+         (previous run: {:F}/10, +{:F})', line)
         if result is None:
             continue
 
         return result[0]
+
 
 def parse_pytest(string):
     """Parses the pytest output string and returns passed and failed test counts.
@@ -59,38 +66,49 @@ def parse_pytest(string):
 
     return None, None
 
+
 def clone_repo(payload, target_dir):
     """Clones the repo declared in 'payload' into 'target_dir'"""
-    os.system("git clone {} {} --depth=1 --no-single-branch".format(payload["repository"]["clone_url"], target_dir))
+    os.system("git clone {} {} --depth=1 --no-single-branch"
+              .format(payload["repository"]["clone_url"], target_dir))
     os.system("git -C {} pull".format(target_dir))
     os.system("git -C {} checkout {}".format(target_dir, payload["after"]))
+
 
 def remove_repo(target_dir):
     """Removes 'target_dir' dir from file system"""
     os.system("rm -rf {}".format(target_dir))
 
+
 def exec_pylint(target_dir):
     """Executes pylint on 'target_dir'"""
-    (pylint_stdout, pylint_stderr) = lint.py_run(target_dir, return_std=True)
+    (pylint_stdout, _) = lint.py_run(target_dir, return_std=True)
     pylint_output = pylint_stdout.read()
     return pylint_output
 
+
 def exec_pytest(target_dir):
     """Executes pyte4st on 'target_dir'"""
-    pytest_output = subprocess.run(["python3","-m","pytest"],text=True,capture_output=True,cwd=target_dir).stdout
+    pytest_output = subprocess.run(["python3", "-m", "pytest"], text=True,
+                                   capture_output=True, cwd=target_dir).stdout
     return pytest_output
+
 
 def send_email(payload, target_dir, pylint_output, pytest_output):
     """Sends an email with payload-, pylint-, and pytest content"""
-    subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"], target_dir, payload["commits"][0]["message"])
-    notification.send_notification('Subject: {}\n\n{}'.format(subject, str(pylint_output) + "\n" + str(pytest_output)))
+    subject = '[{}] {} "{}"'.format(payload["repository"]["full_name"],
+                                    target_dir, payload["commits"][0]["message"])
+    notification.send_notification('Subject: {}\n\n{}'
+                                   .format(subject, str(pylint_output) + "\n" + str(pytest_output)))
+
 
 def handle_push(payload):
+    """When a push is done on a repository, this function is called"""
     repo_id = payload["repository"]["id"]
     commit_sha = payload["after"]
-    repo_directory = "/tmp/testrepo_{}{}".format(repo_id,commit_sha)
+    repo_directory = "/tmp/testrepo_{}{}".format(repo_id, commit_sha)
 
-    update_status(payload,"pending")
+    update_status(payload, "pending")
 
     clone_repo(payload, repo_directory)
 
@@ -104,20 +122,21 @@ def handle_push(payload):
     print(pylint_output)
     print(pytest_output)
 
-    with open("/tmp/CILogs/{}.txt".format(commit_sha),"w") as log:
-        log.write(pylint_output+"\n"+pytest_output)
+    with open("/tmp/CILogs/{}.txt".format(commit_sha), "w") as log:
+        log.write(pylint_output + "\n" + pytest_output)
 
-    if "ERRORS" in pytest_output:
-        update_status(payload,"error","The commit testing resulted in some errors")
-    elif "FAILURES" in pytest_output:
-        update_status(payload,"failure","The commit testing failed")
+    if "ERRORS" in str(pytest_output):
+        update_status(payload, "error", "The commit testing resulted in some errors")
+    elif "FAILURES" in str(pytest_output):
+        update_status(payload, "failure", "The commit testing failed")
     else:
-        update_status(payload,"success","The commit testing succeded")
+        update_status(payload, "success", "The commit testing succeded")
         if payload['ref'] == "refs/heads/main":
             os.system("git pull")
 
 
 def update_status(payload, status="success", description="CI"):
+    """Sends a request to the github API to update the commit status"""
     repo_name = payload["repository"]["full_name"]
     sha = payload["after"]
     url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}.txt'.format(
@@ -126,29 +145,30 @@ def update_status(payload, status="success", description="CI"):
     )
 
     headers = {
-        'Authorization': 'Bearer ' + auth_token
+        'Authorization': 'Bearer ' + AUTH_TOKEN
     }
 
-    json = {
+    json_data = {
         "state": status,
         "target_url": "http://145.14.102.143/" + sha,
         "description": description,
         "context": "continuous-integration/dd2480"
     }
-    requests.post(url, json=json, headers=headers)
+    requests.post(url, json=json_data, headers=headers)
+
 
 if __name__ == '__main__':
     #   Used for testing only
     #
     #   with open("src/CI/data/demo_payload.json") as f:
     #       payload = json.load(f)
-    #   
+    #
     #       handle_push(payload)
-        
+
     if not os.path.isdir("/tmp/CILogs"):
         os.mkdir("/tmp/CILogs")
 
-    #TODO: change port 81 to different port when webhook can be changed. Webserver should be 80 and webhook somthing else :)
-    subprocess.Popen(["python3","-m","http.server","81","-d","/tmp/CILogs"])
-    app.run(debug=True, host='0.0.0.0',port=80)
-    
+    # TODO: change port 81 to different port when webhook can be changed.
+    #  Webserver should be 80 and webhook something else :)
+    subprocess.Popen(["python3", "-m", "http.server", "81", "-d", "/tmp/CILogs"])
+    app.run(debug=True, host='0.0.0.0', port=80)
