@@ -8,8 +8,6 @@ import parse
 from pylint import epylint as lint
 from flask import Flask, request
 
-AUTH_TOKEN = '8e8af8fc53ffe2d1971bc627f1ee5ddfdd85c426'
-
 app = Flask(__name__)
 
 
@@ -139,14 +137,10 @@ def update_status(payload, status="success", description="CI"):
     """Sends a request to the github API to update the commit status"""
     repo_name = payload["repository"]["full_name"]
     sha = payload["after"]
-    url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}.txt'.format(
+    url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}'.format(
         repo_name=repo_name,
         sha=sha
     )
-
-    headers = {
-        'Authorization': 'Bearer ' + AUTH_TOKEN
-    }
 
     json_data = {
         "state": status,
@@ -154,6 +148,12 @@ def update_status(payload, status="success", description="CI"):
         "description": description,
         "context": "continuous-integration/dd2480"
     }
+
+    with open("/tmp/auth") as f:
+        headers = {
+            'Authorization': 'Bearer ' + f.read().strip()
+        }
+        
     requests.post(url, json=json_data, headers=headers)
 
 
