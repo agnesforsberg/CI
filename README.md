@@ -1,6 +1,7 @@
 # **CI**
 This project implements a simple continuous integration (CI) server. It is built to be used with the webhook functionality provided by Github when there is a push event. Once the server recieves a request from the webhook it will run the tests of the pushing branch and return a report of the status of the branch.
 
+
 # Features
 * Static analysis on python code (pylint)
 * Test automation on python code (pytest)
