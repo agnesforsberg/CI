@@ -34,12 +34,12 @@ def parse_pylint(string):
     lines = string.split('\n')
 
     for line in lines[::-1]:
-        result = parse.parse(' Your code has been rated at {:F}/10\
-         (previous run: {:F}/10, +{:F})', line)
+        result = parse.search('Your code has been rated at {:f}/10', line)
         if result is None:
             continue
 
         return result[0]
+    return 0
 
 
 def parse_pytest(string):
@@ -63,7 +63,7 @@ def parse_pytest(string):
 
         return passed, failed, errors
 
-    return None, None
+    return None, None, None
 
 
 def clone_repo(payload, target_dir):
@@ -110,21 +110,29 @@ def handle_push(payload):
 
     timestamp = datetime.now().strftime('[%Y%m%dT%H%M%S]_')
 
-    update_status(payload, timestamp, commit_sha, "pending", "The commit is being tested")
+    update_status(payload, timestamp, commit_sha, "pending", "The staging has begun.")
 
     clone_repo(payload, repo_directory)
 
+    update_status(payload, timestamp, commit_sha, "pending", "The repository has been cloned.")
+
     pylint_output = exec_pylint(repo_directory)
     pylint_score = parse_pylint(pylint_output)
+    update_status(payload, timestamp, commit_sha, "pending", "Static analysis is complete.")
+
     pytest_output = exec_pytest(repo_directory)
+    update_status(payload, timestamp, commit_sha, "pending", "Testing is complete.")
 
     send_email(payload, repo_directory, pylint_output, pytest_output)
 
+    update_status(payload, timestamp, commit_sha, "pending", "Email has been sent.")
+
     remove_repo(repo_directory)
+
+    update_status(payload, timestamp, commit_sha, "pending", "Local copy has been removed.")
 
     print(pylint_output)
     print(pytest_output)
-
     
     with open("/tmp/CILogs/{}{}.txt".format(timestamp,commit_sha), "w") as log:
         log.write(pylint_output + "\n" + pytest_output)
