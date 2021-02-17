@@ -112,6 +112,7 @@ def handle_push(payload):
     clone_repo(payload, repo_directory)
 
     pylint_output = exec_pylint(repo_directory)
+    pylint_score = parse_pylint(pylint_output)
     pytest_output = exec_pytest(repo_directory)
 
     send_email(payload, repo_directory, pylint_output, pytest_output)
@@ -126,7 +127,9 @@ def handle_push(payload):
     with open("/tmp/CILogs/{}{}.txt".format(timestamp,commit_sha), "w") as log:
         log.write(pylint_output + "\n" + pytest_output)
 
-    if "ERRORS" in str(pytest_output):
+    if pylint_score <= 5:
+        update_status(payload, "error", "The commit was scored too low by the linter")
+    elif "ERRORS" in str(pytest_output) :
         update_status(payload, "error", "The commit testing resulted in some errors")
     elif "FAILURES" in str(pytest_output):
         update_status(payload, "failure", "The commit testing failed")
