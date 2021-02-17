@@ -39,6 +39,7 @@ make all
 
 A personal access token is also required to update commit statuses. It can be generated [here](https://github.com/settings/tokens) and should be placed in /tmp/auth.
 
+
 ## Requirements
 * Python ~= 3.8.5
 * Pip ~= 20.0.2
