@@ -150,7 +150,7 @@ def update_status(payload, timestamp, commit_sha, status="success", description=
 
     json_data = {
         "state": status,
-        "target_url": "http://145.14.102.143/{timestamp}{sha}.txt".format(
+        "target_url": "http://145.14.102.143:81/{timestamp}{sha}.txt".format(
             timestamp=timestamp,
             sha=sha
         ),
