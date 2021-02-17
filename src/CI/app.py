@@ -128,18 +128,18 @@ def handle_push(payload):
         log.write(pylint_output + "\n" + pytest_output)
 
     if pylint_score <= 5:
-        update_status(payload, "error", "The commit was scored too low by the linter")
+        update_status(payload, timestamp, commit_sha, "error", "The commit was scored too low by the linter")
     elif "ERRORS" in str(pytest_output) :
-        update_status(payload, "error", "The commit testing resulted in some errors")
+        update_status(payload, timestamp, commit_sha, "error", "The commit testing resulted in some errors")
     elif "FAILURES" in str(pytest_output):
-        update_status(payload, "failure", "The commit testing failed")
+        update_status(payload, timestamp, commit_sha, "failure", "The commit testing failed")
     else:
-        update_status(payload, "success", "The commit testing succeded")
+        update_status(payload, timestamp, commit_sha, "success", "The commit testing succeded")
         if payload['ref'] == "refs/heads/main":
             os.system("git pull")
 
 
-def update_status(payload, status="success", description="CI"):
+def update_status(payload, timestamp, commit_sha, status="success", description="CI"):
     """Sends a request to the github API to update the commit status"""
     repo_name = payload["repository"]["full_name"]
     sha = payload["after"]
@@ -150,7 +150,10 @@ def update_status(payload, status="success", description="CI"):
 
     json_data = {
         "state": status,
-        "target_url": "http://145.14.102.143/" + sha,
+        "target_url": "http://145.14.102.143/{timestamp}{sha}.txt".format(
+            timestamp=timestamp,
+            sha=sha
+        ),
         "description": description,
         "context": "continuous-integration/dd2480"
     }
