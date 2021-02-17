@@ -107,7 +107,10 @@ def handle_push(payload):
     commit_sha = payload["after"]
     repo_directory = "/tmp/testrepo_{}{}".format(repo_id, commit_sha)
 
-    update_status(payload, "pending")
+
+    timestamp = datetime.now().strftime('[%Y%m%dT%H%M%S]_')
+
+    update_status(payload, timestamp, commit_sha, "pending", "The commit is being tested")
 
     clone_repo(payload, repo_directory)
 
@@ -122,7 +125,6 @@ def handle_push(payload):
     print(pylint_output)
     print(pytest_output)
 
-    timestamp = datetime.now().strftime('[%Y%m%dT%H%M%S]_')
     
     with open("/tmp/CILogs/{}{}.txt".format(timestamp,commit_sha), "w") as log:
         log.write(pylint_output + "\n" + pytest_output)
@@ -143,16 +145,18 @@ def update_status(payload, timestamp, commit_sha, status="success", description=
     """Sends a request to the github API to update the commit status"""
     repo_name = payload["repository"]["full_name"]
     sha = payload["after"]
-    url = 'https://api.github.com/repos/{repo_name}/statuses/{sha}'.format(
+    url = 'https://api.github.com/repos/{repo_name}/statuses/{commit_sha}'.format(
         repo_name=repo_name,
-        sha=sha
+        commit_sha=commit_sha
     )
 
     json_data = {
         "state": status,
-        "target_url": "http://145.14.102.143:81/{timestamp}{sha}.txt".format(
+
+        "target_url": "http://145.14.102.143:81/{timestamp}{commit_sha}.txt".format(
+
             timestamp=timestamp,
-            sha=sha
+            commit_sha=commit_sha
         ),
         "description": description,
         "context": "continuous-integration/dd2480"
