@@ -21,14 +21,12 @@ class TestCheckCommit(unittest.TestCase):
             }
             get_url = "https://api.github.com/repos/agnesforsberg/CI/commits/{sha}/status".format(sha=sha)
             
-            app.update_status(payload, status="success")
+            app.update_status(payload, 'asdf', sha, status="success")
             res = requests.get(get_url, headers=headers)
             ctx = res.json()
             self.assertEqual(ctx['state'], "success")
 
-            app.update_status(payload, status="pending")
+            app.update_status(payload, 'asdf', sha, status="pending")
             res = requests.get(get_url, headers=headers)
             ctx = res.json()
             self.assertEquals(ctx['state'], "pending")
-
-        

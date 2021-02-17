@@ -74,7 +74,6 @@ class TestStringMethods(unittest.TestCase):
     		path = './a' + ''.join([e for e in random.choice(string.ascii_uppercase + string.digits) for _ in range(10)])
     		os.mkdir(path)
     		app.exec_pytest(path)
-    		os.rmdir(path)
     	except:
     		assert False
 
@@ -85,6 +84,5 @@ class TestStringMethods(unittest.TestCase):
     		path = './a' + ''.join([e for e in random.choice(string.ascii_uppercase + string.digits) for _ in range(10)])
     		os.mkdir(path)
     		app.exec_pylint(path)
-    		os.rmdir(path)
     	except:
     		assert False
