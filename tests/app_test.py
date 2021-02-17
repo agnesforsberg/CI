@@ -7,6 +7,7 @@ import email
 from email.header import decode_header
 from src.CI import app
 from src.CI import notification
+import random, string
 
 
 class TestStringMethods(unittest.TestCase):
@@ -66,3 +67,24 @@ class TestStringMethods(unittest.TestCase):
             sender, _ = decode_header(msg.get("From"))[0]
             self.assertEqual(str(sender), "group.19.dd2480@gmail.com")
 
+    def test_pytest_if_no_tests_in_dir(self):
+    	"""Pytest should not raise an exception if the target directory is empty.
+    	"""
+    	try:
+    		path = './a' + ''.join([e for e in random.choice(string.ascii_uppercase + string.digits) for _ in range(10)])
+    		os.mkdir(path)
+    		app.exec_pytest(path)
+    		os.rmdir(path)
+    	except:
+    		assert False
+
+    def test_pylint_if_no_python_in_dir(self):
+    	"""Pylint should not raise an exception if the target directory is empty.
+    	"""
+    	try:
+    		path = './a' + ''.join([e for e in random.choice(string.ascii_uppercase + string.digits) for _ in range(10)])
+    		os.mkdir(path)
+    		app.exec_pylint(path)
+    		os.rmdir(path)
+    	except:
+    		assert False
