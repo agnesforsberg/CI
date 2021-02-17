@@ -67,3 +67,4 @@ A personal access token is also required to update commit statuses. It can be ge
   - Code refactor
   - Co-author of commit status implementation
   - Idea machine.
+  - 
