@@ -175,6 +175,6 @@
         "starred_url": "https://api.github.com/users/ntomsic/starred{/owner}{/repo}",
         "subscriptions_url": "https://api.github.com/users/ntomsic/subscriptions",
         "type": "User",
-        "url": "https://api.github.com/users/ntomsic"
+        "url": "https://api.github.com/users/Ntomsic"
     }
 }
