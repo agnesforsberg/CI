@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>CI.src.CI.app API documentation</title>
+<meta name="description" content="This is app.py" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>CI.src.CI.app</code></h1>
+</header>
+<section id="section-intro">
+<p>This is app.py</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;This is app.py&#34;&#34;&#34;
+import os
+import subprocess
+import json
+import requests
+import notification
+import parse
+from pylint import epylint as lint
+from flask import Flask, request
+from datetime import datetime
+
+app = Flask(__name__)
+
+
+@app.route(&#39;/&#39;)
+def index():
+    &#34;&#34;&#34;Simple function for test.py&#34;&#34;&#34;
+    return &#34;Hello :)&#34;
+
+
+@app.route(&#34;/webhook&#34;, methods=[&#39;POST&#39;])
+def github_webhook_handler():
+    &#34;&#34;&#34;The following method gets called by the github webhook.&#34;&#34;&#34;
+    payload = json.loads(request.form[&#39;payload&#39;])
+    event_type = request.headers[&#34;X-Github-Event&#34;]
+    if event_type == &#34;push&#34;:
+        handle_push(payload)
+    return &#34;&#34;
+
+
+def parse_pylint(string):
+    &#34;&#34;&#34;Parses the pylint stdout string returns the result.
+        returns None if no output found.&#34;&#34;&#34;
+    lines = string.split(&#39;\n&#39;)
+
+    for line in lines[::-1]:
+        result = parse.search(&#39;Your code has been rated at {:f}/10&#39;, line)
+        if result is None:
+            continue
+
+        return result[0]
+    return 0
+
+
+def parse_pytest(string):
+    &#34;&#34;&#34;Parses the pytest output string and returns passed and failed test counts.
+    If no counts are found, None is returned instead for that case.
+    &#34;&#34;&#34;
+    lines = string.split(&#39;\n&#39;)
+
+    for line in lines[::-1]:
+        if not parse.parse(&#39;========================={}=========================&#39;, line):
+            continue
+        passed = parse.search(&#39;{:d} passed&#39;, line)
+        failed = parse.search(&#39;{:d} failed&#39;, line)
+        errors = parse.search(&#39;errors&#39;, line)
+        if passed:
+            passed = passed[0]
+        if failed:
+            failed = failed[0]
+        if errors:
+            errors = True
+
+        return passed, failed, errors
+
+    return None, None, None
+
+
+def clone_repo(payload, target_dir):
+    &#34;&#34;&#34;Clones the repo declared in &#39;payload&#39; into &#39;target_dir&#39;&#34;&#34;&#34;
+    os.system(&#34;git clone {} {} --depth=1 --no-single-branch&#34;
+              .format(payload[&#34;repository&#34;][&#34;clone_url&#34;], target_dir))
+    os.system(&#34;git -C {} pull&#34;.format(target_dir))
+    os.system(&#34;git -C {} checkout {}&#34;.format(target_dir, payload[&#34;after&#34;]))
+
+
+def remove_repo(target_dir):
+    &#34;&#34;&#34;Removes &#39;target_dir&#39; dir from file system&#34;&#34;&#34;
+    os.system(&#34;rm -rf {}&#34;.format(target_dir))
+
+
+def exec_pylint(target_dir):
+    &#34;&#34;&#34;Executes pylint on &#39;target_dir&#39;&#34;&#34;&#34;
+    (pylint_stdout, _) = lint.py_run(target_dir, return_std=True)
+    pylint_output = pylint_stdout.read()
+    return pylint_output
+
+
+def exec_pytest(target_dir):
+    &#34;&#34;&#34;Executes pyte4st on &#39;target_dir&#39;&#34;&#34;&#34;
+    pytest_output = subprocess.run([&#34;python3&#34;, &#34;-m&#34;, &#34;pytest&#34;], text=True,
+                                   capture_output=True, cwd=target_dir).stdout
+    return pytest_output
+
+
+def send_email(payload, target_dir, pylint_output, pytest_output):
+    &#34;&#34;&#34;Sends an email with payload-, pylint-, and pytest content&#34;&#34;&#34;
+    subject = &#39;[{}] {} &#34;{}&#34;&#39;.format(payload[&#34;repository&#34;][&#34;full_name&#34;],
+                                    target_dir, payload[&#34;commits&#34;][0][&#34;message&#34;])
+    notification.send_notification(&#39;Subject: {}\n\n{}&#39;
+                                   .format(subject, str(pylint_output) + &#34;\n&#34; + str(pytest_output)))
+
+
+def handle_push(payload):
+    &#34;&#34;&#34;When a push is done on a repository, this function is called&#34;&#34;&#34;
+    repo_id = payload[&#34;repository&#34;][&#34;id&#34;]
+    commit_sha = payload[&#34;after&#34;]
+    repo_directory = &#34;/tmp/testrepo_{}{}&#34;.format(repo_id, commit_sha)
+
+
+    timestamp = datetime.now().strftime(&#39;[%Y%m%dT%H%M%S]_&#39;)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;The staging has begun.&#34;)
+
+    clone_repo(payload, repo_directory)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;The repository has been cloned.&#34;)
+
+    pylint_output = exec_pylint(repo_directory)
+    pylint_score = parse_pylint(pylint_output)
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Static analysis is complete.&#34;)
+
+    pytest_output = exec_pytest(repo_directory)
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Testing is complete.&#34;)
+
+    send_email(payload, repo_directory, pylint_output, pytest_output)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Email has been sent.&#34;)
+
+    remove_repo(repo_directory)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Local copy has been removed.&#34;)
+
+    print(pylint_output)
+    print(pytest_output)
+    
+    with open(&#34;/tmp/CILogs/{}{}.txt&#34;.format(timestamp,commit_sha), &#34;w&#34;) as log:
+        log.write(pylint_output + &#34;\n&#34; + pytest_output)
+
+    if pylint_score &lt;= 5:
+        update_status(payload, timestamp, commit_sha, &#34;error&#34;, &#34;The commit was scored too low by the linter&#34;)
+    elif &#34;ERRORS&#34; in str(pytest_output) :
+        update_status(payload, timestamp, commit_sha, &#34;error&#34;, &#34;The commit testing resulted in some errors&#34;)
+    elif &#34;FAILURES&#34; in str(pytest_output):
+        update_status(payload, timestamp, commit_sha, &#34;failure&#34;, &#34;The commit testing failed&#34;)
+    else:
+        update_status(payload, timestamp, commit_sha, &#34;success&#34;, &#34;The commit testing succeded&#34;)
+        if payload[&#39;ref&#39;] == &#34;refs/heads/main&#34;:
+            os.system(&#34;git pull&#34;)
+
+
+def update_status(payload, timestamp, commit_sha, status=&#34;success&#34;, description=&#34;CI&#34;):
+    &#34;&#34;&#34;Sends a request to the github API to update the commit status&#34;&#34;&#34;
+    repo_name = payload[&#34;repository&#34;][&#34;full_name&#34;]
+    sha = payload[&#34;after&#34;]
+    url = &#39;https://api.github.com/repos/{repo_name}/statuses/{commit_sha}&#39;.format(
+        repo_name=repo_name,
+        commit_sha=commit_sha
+    )
+
+    json_data = {
+        &#34;state&#34;: status,
+
+        &#34;target_url&#34;: &#34;http://145.14.102.143:81/{timestamp}{commit_sha}.txt&#34;.format(
+
+            timestamp=timestamp,
+            commit_sha=commit_sha
+        ),
+        &#34;description&#34;: description,
+        &#34;context&#34;: &#34;continuous-integration/dd2480&#34;
+    }
+
+    with open(&#34;/tmp/auth&#34;) as f:
+        headers = {
+            &#39;Authorization&#39;: &#39;Bearer &#39; + f.read().strip()
+        }
+        
+    requests.post(url, json=json_data, headers=headers)
+
+
+if __name__ == &#39;__main__&#39;:
+    #   Used for testing only
+    #
+    #   with open(&#34;src/CI/data/demo_payload.json&#34;) as f:
+    #       payload = json.load(f)
+    #
+    #       handle_push(payload)
+
+    if not os.path.isdir(&#34;/tmp/CILogs&#34;):
+        os.mkdir(&#34;/tmp/CILogs&#34;)
+
+    # TODO: change port 81 to different port when webhook can be changed.
+    #  Webserver should be 80 and webhook something else :)
+    subprocess.Popen([&#34;python3&#34;, &#34;-m&#34;, &#34;http.server&#34;, &#34;81&#34;, &#34;-d&#34;, &#34;/tmp/CILogs&#34;])
+    app.run(debug=True, host=&#39;0.0.0.0&#39;, port=80)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="CI.src.CI.app.clone_repo"><code class="name flex">
+<span>def <span class="ident">clone_repo</span></span>(<span>payload, target_dir)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clones the repo declared in 'payload' into 'target_dir'</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clone_repo(payload, target_dir):
+    &#34;&#34;&#34;Clones the repo declared in &#39;payload&#39; into &#39;target_dir&#39;&#34;&#34;&#34;
+    os.system(&#34;git clone {} {} --depth=1 --no-single-branch&#34;
+              .format(payload[&#34;repository&#34;][&#34;clone_url&#34;], target_dir))
+    os.system(&#34;git -C {} pull&#34;.format(target_dir))
+    os.system(&#34;git -C {} checkout {}&#34;.format(target_dir, payload[&#34;after&#34;]))</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.exec_pylint"><code class="name flex">
+<span>def <span class="ident">exec_pylint</span></span>(<span>target_dir)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes pylint on 'target_dir'</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exec_pylint(target_dir):
+    &#34;&#34;&#34;Executes pylint on &#39;target_dir&#39;&#34;&#34;&#34;
+    (pylint_stdout, _) = lint.py_run(target_dir, return_std=True)
+    pylint_output = pylint_stdout.read()
+    return pylint_output</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.exec_pytest"><code class="name flex">
+<span>def <span class="ident">exec_pytest</span></span>(<span>target_dir)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Executes pyte4st on 'target_dir'</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exec_pytest(target_dir):
+    &#34;&#34;&#34;Executes pyte4st on &#39;target_dir&#39;&#34;&#34;&#34;
+    pytest_output = subprocess.run([&#34;python3&#34;, &#34;-m&#34;, &#34;pytest&#34;], text=True,
+                                   capture_output=True, cwd=target_dir).stdout
+    return pytest_output</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.github_webhook_handler"><code class="name flex">
+<span>def <span class="ident">github_webhook_handler</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The following method gets called by the github webhook.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.route(&#34;/webhook&#34;, methods=[&#39;POST&#39;])
+def github_webhook_handler():
+    &#34;&#34;&#34;The following method gets called by the github webhook.&#34;&#34;&#34;
+    payload = json.loads(request.form[&#39;payload&#39;])
+    event_type = request.headers[&#34;X-Github-Event&#34;]
+    if event_type == &#34;push&#34;:
+        handle_push(payload)
+    return &#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.handle_push"><code class="name flex">
+<span>def <span class="ident">handle_push</span></span>(<span>payload)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>When a push is done on a repository, this function is called</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_push(payload):
+    &#34;&#34;&#34;When a push is done on a repository, this function is called&#34;&#34;&#34;
+    repo_id = payload[&#34;repository&#34;][&#34;id&#34;]
+    commit_sha = payload[&#34;after&#34;]
+    repo_directory = &#34;/tmp/testrepo_{}{}&#34;.format(repo_id, commit_sha)
+
+
+    timestamp = datetime.now().strftime(&#39;[%Y%m%dT%H%M%S]_&#39;)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;The staging has begun.&#34;)
+
+    clone_repo(payload, repo_directory)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;The repository has been cloned.&#34;)
+
+    pylint_output = exec_pylint(repo_directory)
+    pylint_score = parse_pylint(pylint_output)
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Static analysis is complete.&#34;)
+
+    pytest_output = exec_pytest(repo_directory)
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Testing is complete.&#34;)
+
+    send_email(payload, repo_directory, pylint_output, pytest_output)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Email has been sent.&#34;)
+
+    remove_repo(repo_directory)
+
+    update_status(payload, timestamp, commit_sha, &#34;pending&#34;, &#34;Local copy has been removed.&#34;)
+
+    print(pylint_output)
+    print(pytest_output)
+    
+    with open(&#34;/tmp/CILogs/{}{}.txt&#34;.format(timestamp,commit_sha), &#34;w&#34;) as log:
+        log.write(pylint_output + &#34;\n&#34; + pytest_output)
+
+    if pylint_score &lt;= 5:
+        update_status(payload, timestamp, commit_sha, &#34;error&#34;, &#34;The commit was scored too low by the linter&#34;)
+    elif &#34;ERRORS&#34; in str(pytest_output) :
+        update_status(payload, timestamp, commit_sha, &#34;error&#34;, &#34;The commit testing resulted in some errors&#34;)
+    elif &#34;FAILURES&#34; in str(pytest_output):
+        update_status(payload, timestamp, commit_sha, &#34;failure&#34;, &#34;The commit testing failed&#34;)
+    else:
+        update_status(payload, timestamp, commit_sha, &#34;success&#34;, &#34;The commit testing succeded&#34;)
+        if payload[&#39;ref&#39;] == &#34;refs/heads/main&#34;:
+            os.system(&#34;git pull&#34;)</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.index"><code class="name flex">
+<span>def <span class="ident">index</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Simple function for test.py</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@app.route(&#39;/&#39;)
+def index():
+    &#34;&#34;&#34;Simple function for test.py&#34;&#34;&#34;
+    return &#34;Hello :)&#34;</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.parse_pylint"><code class="name flex">
+<span>def <span class="ident">parse_pylint</span></span>(<span>string)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parses the pylint stdout string returns the result.
+returns None if no output found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_pylint(string):
+    &#34;&#34;&#34;Parses the pylint stdout string returns the result.
+        returns None if no output found.&#34;&#34;&#34;
+    lines = string.split(&#39;\n&#39;)
+
+    for line in lines[::-1]:
+        result = parse.search(&#39;Your code has been rated at {:f}/10&#39;, line)
+        if result is None:
+            continue
+
+        return result[0]
+    return 0</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.parse_pytest"><code class="name flex">
+<span>def <span class="ident">parse_pytest</span></span>(<span>string)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parses the pytest output string and returns passed and failed test counts.
+If no counts are found, None is returned instead for that case.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_pytest(string):
+    &#34;&#34;&#34;Parses the pytest output string and returns passed and failed test counts.
+    If no counts are found, None is returned instead for that case.
+    &#34;&#34;&#34;
+    lines = string.split(&#39;\n&#39;)
+
+    for line in lines[::-1]:
+        if not parse.parse(&#39;========================={}=========================&#39;, line):
+            continue
+        passed = parse.search(&#39;{:d} passed&#39;, line)
+        failed = parse.search(&#39;{:d} failed&#39;, line)
+        errors = parse.search(&#39;errors&#39;, line)
+        if passed:
+            passed = passed[0]
+        if failed:
+            failed = failed[0]
+        if errors:
+            errors = True
+
+        return passed, failed, errors
+
+    return None, None, None</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.remove_repo"><code class="name flex">
+<span>def <span class="ident">remove_repo</span></span>(<span>target_dir)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Removes 'target_dir' dir from file system</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_repo(target_dir):
+    &#34;&#34;&#34;Removes &#39;target_dir&#39; dir from file system&#34;&#34;&#34;
+    os.system(&#34;rm -rf {}&#34;.format(target_dir))</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.send_email"><code class="name flex">
+<span>def <span class="ident">send_email</span></span>(<span>payload, target_dir, pylint_output, pytest_output)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sends an email with payload-, pylint-, and pytest content</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_email(payload, target_dir, pylint_output, pytest_output):
+    &#34;&#34;&#34;Sends an email with payload-, pylint-, and pytest content&#34;&#34;&#34;
+    subject = &#39;[{}] {} &#34;{}&#34;&#39;.format(payload[&#34;repository&#34;][&#34;full_name&#34;],
+                                    target_dir, payload[&#34;commits&#34;][0][&#34;message&#34;])
+    notification.send_notification(&#39;Subject: {}\n\n{}&#39;
+                                   .format(subject, str(pylint_output) + &#34;\n&#34; + str(pytest_output)))</code></pre>
+</details>
+</dd>
+<dt id="CI.src.CI.app.update_status"><code class="name flex">
+<span>def <span class="ident">update_status</span></span>(<span>payload, timestamp, commit_sha, status='success', description='CI')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sends a request to the github API to update the commit status</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_status(payload, timestamp, commit_sha, status=&#34;success&#34;, description=&#34;CI&#34;):
+    &#34;&#34;&#34;Sends a request to the github API to update the commit status&#34;&#34;&#34;
+    repo_name = payload[&#34;repository&#34;][&#34;full_name&#34;]
+    sha = payload[&#34;after&#34;]
+    url = &#39;https://api.github.com/repos/{repo_name}/statuses/{commit_sha}&#39;.format(
+        repo_name=repo_name,
+        commit_sha=commit_sha
+    )
+
+    json_data = {
+        &#34;state&#34;: status,
+
+        &#34;target_url&#34;: &#34;http://145.14.102.143:81/{timestamp}{commit_sha}.txt&#34;.format(
+
+            timestamp=timestamp,
+            commit_sha=commit_sha
+        ),
+        &#34;description&#34;: description,
+        &#34;context&#34;: &#34;continuous-integration/dd2480&#34;
+    }
+
+    with open(&#34;/tmp/auth&#34;) as f:
+        headers = {
+            &#39;Authorization&#39;: &#39;Bearer &#39; + f.read().strip()
+        }
+        
+    requests.post(url, json=json_data, headers=headers)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="CI.src.CI" href="index.html">CI.src.CI</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="CI.src.CI.app.clone_repo" href="#CI.src.CI.app.clone_repo">clone_repo</a></code></li>
+<li><code><a title="CI.src.CI.app.exec_pylint" href="#CI.src.CI.app.exec_pylint">exec_pylint</a></code></li>
+<li><code><a title="CI.src.CI.app.exec_pytest" href="#CI.src.CI.app.exec_pytest">exec_pytest</a></code></li>
+<li><code><a title="CI.src.CI.app.github_webhook_handler" href="#CI.src.CI.app.github_webhook_handler">github_webhook_handler</a></code></li>
+<li><code><a title="CI.src.CI.app.handle_push" href="#CI.src.CI.app.handle_push">handle_push</a></code></li>
+<li><code><a title="CI.src.CI.app.index" href="#CI.src.CI.app.index">index</a></code></li>
+<li><code><a title="CI.src.CI.app.parse_pylint" href="#CI.src.CI.app.parse_pylint">parse_pylint</a></code></li>
+<li><code><a title="CI.src.CI.app.parse_pytest" href="#CI.src.CI.app.parse_pytest">parse_pytest</a></code></li>
+<li><code><a title="CI.src.CI.app.remove_repo" href="#CI.src.CI.app.remove_repo">remove_repo</a></code></li>
+<li><code><a title="CI.src.CI.app.send_email" href="#CI.src.CI.app.send_email">send_email</a></code></li>
+<li><code><a title="CI.src.CI.app.update_status" href="#CI.src.CI.app.update_status">update_status</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
